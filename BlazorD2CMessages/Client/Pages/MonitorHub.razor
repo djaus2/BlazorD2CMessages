@@ -1,0 +1,82 @@
+@page "/"
+@page "/fetchdata"
+@using BlazorD2CMessages.Shared
+@inject HttpClient Http
+
+<h1>Monitor IoT Hub</h1>
+
+<p>This component demonstrates fetching IoT Hub data via the server.</p>
+<h3>Hub Connection Details in Environment Variables:</h3>
+<small>EVENT_HUBS_COMPATIBILITY_ENDPOINT</small><br />
+<small>EVENT_HUBS_COMPATIBILITY: Your service primary key</small> <br />
+<small>SHARED_ACCESS_KEY_NAME</small><br />
+
+@if (IsTimerRunning)
+{
+    <p><em><font color="blue">Running.</font>.</em></p>
+}
+else
+{
+    <p><em><font color="red">Not Running..</font></em></p>
+}
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Sensor Type</th>
+            <th>Value</th>
+            <th>TimeStamp</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><button @onclick="@( ()=>{IsTimerRunning = false;})">Stop</button></td>
+            <td><button @onclick="@( ()=>{ Sensors = new List<Sensor>(); Refresh().GetAwaiter();})">Start</button></td>
+            <td><button @onclick="@( ()=> { Sensors = new List<Sensor>(); })">Clear</button></td>
+            <td><i>Nb: Autostarts.</i>.</td>
+        </tr>
+        @foreach (var sensor in Sensors)
+        {
+            <tr>
+                <td>@sensor.Id</td>
+                <td>@sensor.SensorType</td>
+                <td>@sensor.Value</td>
+                <td>@sensor.TimeStamp</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+@code {
+    private List<Sensor> Sensors;
+
+    protected override void OnInitialized()
+    {
+        Sensors = new List<Sensor>();
+        Refresh().GetAwaiter();
+        base.OnInitialized();
+    }
+
+    bool IsTimerRunning = false;
+    async Task Refresh()
+    {
+        IsTimerRunning = true;
+        while (IsTimerRunning)
+        {
+            await Task.Delay(TimeSpan.FromSeconds(5));
+            if (IsTimerRunning)
+            {
+                var sensors = await Http.GetFromJsonAsync<Sensor[]>("Sensor");
+                Sensors.AddRange(sensors);
+                StateHasChanged();
+            }
+
+        }
+    }
+
+
+}
