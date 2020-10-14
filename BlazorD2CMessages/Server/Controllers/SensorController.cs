@@ -34,7 +34,7 @@ namespace BlazorD2CMessages.Server.Controllers
 
         //    var xx =  ReadDeviceToCloudMessages.Sensors;
         //    return xx;
-      
+
         //    //var rng = new Random();
         //    //return Enumerable.Range(1, 5).Select(index => new WeatherForecast
         //    //{
@@ -45,17 +45,32 @@ namespace BlazorD2CMessages.Server.Controllers
         //    //.ToArray();
         //}
 
+        //private static int delay = 1;
+        //private static int delayMax = 16;
+
         [HttpGet]
         public  async Task<IActionResult> Get()
         {
+
             List<Sensor> Sensors = new List<Sensor>();
             while(ReadDeviceToCloudMessages.Sensors.Count!=0)
             {
                 Sensor sensor = ReadDeviceToCloudMessages.Sensors.Dequeue();
                 Sensors.Add(sensor);
             }
+            //if (Sensors.Count() == 0)
+            //{
+            //    if (delay < delayMax)
+            //        delay *= 2;
+            //}
+            //else
+            //{
+            //    if (delay > 1)
+            //        delay /= 2;
+            //}
+            //await Task.Delay(TimeSpan.FromSeconds(delay));
             //var sensors = ReadDeviceToCloudMessages.Sensors;
-            await Task.Delay(1000);
+            await Task.Delay(1); //Just to make this a proper asnc Task
             return Ok(Sensors);
         }
     }

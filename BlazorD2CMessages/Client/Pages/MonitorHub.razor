@@ -24,6 +24,7 @@ else
 <table class="table">
     <thead>
         <tr>
+            <th>No.</th>
             <th>Id</th>
             <th>Sensor Type</th>
             <th>Value</th>
@@ -35,16 +36,17 @@ else
             <td><button @onclick="@( ()=>{IsTimerRunning = false;})">Stop</button></td>
             <td><button @onclick="@( ()=>{ Sensors = new List<Sensor>(); Refresh().GetAwaiter();})">Start</button></td>
             <td><button @onclick="@( ()=> { Sensors = new List<Sensor>(); })">Clear</button></td>
-            <td><i>Nb: Autostarts.</i>.</td>
+            <td><i>>Nb:</i> Autostarts</td><td> <i>Delay = @delay</i>.</td>
         </tr>
         @foreach (var sensor in Sensors)
         {
-            <tr>
-                <td>@sensor.Id</td>
-                <td>@sensor.SensorType</td>
-                <td>@sensor.Value</td>
-                <td>@sensor.TimeStamp</td>
-            </tr>
+    <tr>
+        <td>@sensor.No</td>
+        <td>@sensor.Id</td>
+        <td>@sensor.SensorType</td>
+        <td>@sensor.Value</td>
+        <td>@sensor.TimeStamp</td>
+    </tr>
         }
     </tbody>
 </table>
@@ -53,6 +55,9 @@ else
 
 @code {
     private List<Sensor> Sensors;
+
+    private int delay = 1;
+    private int delayMax = 16;
 
     protected override void OnInitialized()
     {
@@ -64,13 +69,25 @@ else
     bool IsTimerRunning = false;
     async Task Refresh()
     {
+        delay = 1;
         IsTimerRunning = true;
         while (IsTimerRunning)
         {
-            await Task.Delay(TimeSpan.FromSeconds(5));
+            await Task.Delay(TimeSpan.FromSeconds(delay));
             if (IsTimerRunning)
             {
                 var sensors = await Http.GetFromJsonAsync<Sensor[]>("Sensor");
+                //if (sensors.Count() == 0)
+                //{
+                //    if (delay < delayMax)
+                //        delay *=2;
+                //}
+                //else
+                //{
+                //    if (delay > 1)
+                //        delay /= 2;
+                //}
+                delay = 1;
                 Sensors.AddRange(sensors);
                 StateHasChanged();
             }
