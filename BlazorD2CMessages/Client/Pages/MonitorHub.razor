@@ -28,6 +28,8 @@ else
             <th>Id</th>
             <th>Sensor Type</th>
             <th>Value</th>
+            <th>Values</th>
+            <th>State</th>
             <th>TimeStamp</th>
         </tr>
     </thead>
@@ -45,6 +47,8 @@ else
         <td>@sensor.Id</td>
         <td>@sensor.SensorType</td>
         <td>@sensor.Value</td>
+        <td>@sensor.ValuesStr</td>
+        <td>@sensor.State.</td>
         <td>@sensor.TimeStamp</td>
     </tr>
         }
@@ -88,7 +92,7 @@ else
                 //        delay /= 2;
                 //}
                 delay = 1;
-                Sensors.AddRange(sensors);
+                Sensors.InsertRange(0,sensors);
                 StateHasChanged();
             }
 

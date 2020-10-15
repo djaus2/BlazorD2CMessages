@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Text;
 
 namespace BlazorD2CMessages.Shared
@@ -17,6 +18,22 @@ namespace BlazorD2CMessages.Shared
 
         public bool State { get; set; }
         public List<double>? Values { get; set; }
+
+        public string ValuesStr {  get
+            {
+                string str = "";
+                if (Values != null)
+                {
+                    foreach (double val in Values)
+                    {
+                        str += $", {val}";
+                    }
+                }
+                else
+                    str = "null";
+                return str;
+            } 
+        }
         public SensorType SensorType { get; set; }
         public long TimeStamp { get; set; }
 
