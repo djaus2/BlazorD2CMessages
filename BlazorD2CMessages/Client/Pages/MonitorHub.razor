@@ -35,10 +35,11 @@ else
     </thead>
     <tbody>
         <tr>
-            <td><button @onclick="@( ()=>{IsTimerRunning = false;})">Stop</button></td>
-            <td><button @onclick="@( ()=>{ Sensors = new List<Sensor>(); Refresh().GetAwaiter();})">Start</button></td>
-            <td><button @onclick="@( ()=> { Sensors = new List<Sensor>(); })">Clear</button></td>
-            <td><i>>Nb:</i> Autostarts</td><td> <i>Delay = @delay</i>.</td>
+            <td>&nbsp;</td>
+            <td><button @onclick="@( ()=>{IsTimerRunning = false;})">Stop</button>&nbsp;
+            <button @onclick="@( ()=>{ Sensors = new List<Sensor>(); Refresh().GetAwaiter();})">Start</button>&nbsp;
+            <button @onclick="@( ()=> { Sensors = new List<Sensor>(); })">Clear</button></td>
+            <td><i>Nb:</i> Autostarts</td><td> <i>Delay = @delay</i>.</td>
         </tr>
         @foreach (var sensor in Sensors)
         {

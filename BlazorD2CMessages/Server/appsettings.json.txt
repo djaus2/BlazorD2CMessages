@@ -1,0 +1,18 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "AllowedHosts": "*",
+
+  "SHARED_ACCESS_KEY_NAME": "<insert>",
+  "EVENT_HUBS_COMPATIBILITY_ENDPOINT": "<Insert>",
+  "EVENT_HUBS_COMPATIBILITY_PATH": "<Insert>",
+  "EVENT_HUBS_SAS_KEY": "<Insert>",
+
+  "REMOTE_HOST_NAME": "localhost",
+  "REMOTE_PORT": "2222"
+}
