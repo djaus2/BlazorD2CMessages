@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <RazorLangVersion>3.0</RazorLangVersion>
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+    <UserSecretsId>7b2d5097-b7c1-4c2d-894f-43d60a911140</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

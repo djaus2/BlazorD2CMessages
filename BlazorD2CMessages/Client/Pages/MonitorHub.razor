@@ -2,24 +2,41 @@
 @page "/fetchdata"
 @using BlazorD2CMessages.Shared
 @inject HttpClient Http
+@using System.Linq
 
-<h1>Monitor IoT Hub</h1>
+<h1>Blazor WASM App: Monitor IoT Hub</h1>
 
-<p>This component demonstrates fetching IoT Hub data via the server.</p>
-<h3>Hub Connection Details in Environment Variables:</h3>
-<small>EVENT_HUBS_COMPATIBILITY_ENDPOINT</small><br />
-<small>EVENT_HUBS_COMPATIBILITY: Your service primary key</small> <br />
-<small>SHARED_ACCESS_KEY_NAME</small><br />
-
+<font color="purple">This app demonstrates fetching <b>IoT Hub</b> data via a <b>Blazor Service</b> using the <b>Azure IoT Hub SDK</b>.</font>
+<br />
+<font color="blue"><b>Hub Connection</b> details in <b>appsettings.json</b></font>
+:
+<br />
+<small>SHARED_ACCESS_KEY_NAME</small>
+<br />
+<small>EVENT_HUBS_SAS_KEY</small>
+<br />
+<small>EVENT_HUBS_COMPATIBILITY_ENDPOINT</small>
+<br />
+<small>EVENT_HUBS_COMPATIBILITY_PATH</small>
+<br />
+<i>Nb:</i>Service Autostarts&nbsp;
+<i>Delay = @delay</i>
+<br />
+<br />
+<button @onclick="@( ()=>{IsTimerRunning = false;})">Stop</button>&nbsp;
+<button @onclick="@( ()=>{ Sensors = new List<Sensor>(); Refresh().GetAwaiter();})">Start</button>&nbsp;
+<button @onclick="@( ()=> { Sensors = new List<Sensor>(); })">Clear</button>&nbsp;
 @if (IsTimerRunning)
 {
-    <p><em><font color="blue">Running.</font>.</em></p>
+    <em>Status:&nbsp;<font color="blue">Running.</font>.</em>
 }
 else
 {
-    <p><em><font color="red">Not Running..</font></em></p>
+    <em>Status:&nbsp;<font color="red">Not Running..</font></em>
 }
 
+<br />
+<br />
 
 <table class="table">
     <thead>
@@ -34,24 +51,17 @@ else
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>&nbsp;</td>
-            <td><button @onclick="@( ()=>{IsTimerRunning = false;})">Stop</button>&nbsp;
-            <button @onclick="@( ()=>{ Sensors = new List<Sensor>(); Refresh().GetAwaiter();})">Start</button>&nbsp;
-            <button @onclick="@( ()=> { Sensors = new List<Sensor>(); })">Clear</button></td>
-            <td><i>Nb:</i> Autostarts</td><td> <i>Delay = @delay</i>.</td>
-        </tr>
         @foreach (var sensor in Sensors)
         {
-    <tr>
-        <td>@sensor.No</td>
-        <td>@sensor.Id</td>
-        <td>@sensor.SensorType</td>
-        <td>@sensor.Value</td>
-        <td>@sensor.ValuesStr</td>
-        <td>@sensor.State.</td>
-        <td>@sensor.TimeStamp</td>
-    </tr>
+            <tr>
+                <td>@sensor.No</td>
+                <td>@sensor.Id</td>
+                <td>@sensor.SensorType</td>
+                <td>@sensor.Value</td>
+                <td>@sensor.ValuesStr</td>
+                <td>@sensor.State.</td>
+                <td>@sensor.TimeStamp</td>
+            </tr>
         }
     </tbody>
 </table>
@@ -93,7 +103,7 @@ else
                 //        delay /= 2;
                 //}
                 delay = 1;
-                Sensors.InsertRange(0,sensors);
+                Sensors.InsertRange(0, sensors.Reverse());
                 StateHasChanged();
             }
 
